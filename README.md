@@ -76,7 +76,7 @@ Use if you are using the GPIO pins in conjunction with `py-spidev`
     spi.mode = 1
     spi.max_speed_hz = 500000
 
-    alphasense = opc.OPCN2(spi)
+    alphasense = opc.OPCN3(spi)
 
     # Turn the opc ON
     alphasense.on()
@@ -109,7 +109,7 @@ Use this approach if you have connected your RPi to the OPC-N2 via a SPI-USB ada
     spi.mode = 1
     spi.max_speed_hz = 500000
 
-    alpha = opc.OPCN2(spi)
+    alpha = opc.OPCN3(spi)
 
     # Turn on the device
     alpha.on()

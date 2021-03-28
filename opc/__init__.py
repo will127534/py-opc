@@ -541,7 +541,7 @@ class OPCN3(_OPC):
         while a is not arep or b is not brep:
             a = self.cnxn.xfer([0x30])[0]
             #print(hex(a), a)
-            sleep(0.02)
+            sleep(0.01)
             b = self.cnxn.xfer([0x30])[0]
             #print(hex(b), b)
 
@@ -554,7 +554,6 @@ class OPCN3(_OPC):
             #r = self.cnxn.xfer([0x00])[0]
             r = self.cnxn.xfer([0x30])[0]
             resp.append(r)
-            sleep(10e-3)
 
         #print(resp)
             
@@ -651,41 +650,6 @@ class OPCN3(_OPC):
             data['Bin 21']  = data['Bin 21'] / _conv_
             data['Bin 22']  = data['Bin 22'] / _conv_
             data['Bin 23']  = data['Bin 23'] / _conv_
-
-
-        #print("Bin  0:", data['Bin 0'])
-        #print("Bin  1:", data['Bin 1'])
-        #print("Bin  2:", data['Bin 2'])
-        #print("Bin  3:", data['Bin 3'])
-        #print("Bin  4:", data['Bin 4'])
-        #print("Bin  5:", data['Bin 5'])
-        #print("Bin  6:", data['Bin 6'])
-        #print("Bin  7:", data['Bin 7'])
-        #print("Bin  8:", data['Bin 8'])
-        #print("Bin  9:", data['Bin 9'])
-        #print("Bin 10:", data['Bin 10'])
-        #print("Bin 11:", data['Bin 11'])
-        #print("Bin 12:", data['Bin 12'])
-        #print("Bin 13:", data['Bin 13'])
-        #print("Bin 14:", data['Bin 14'])
-        #print("Bin 15:", data['Bin 15'])
-        #print("Bin 16:", data['Bin 16'])
-        #print("Bin 17:", data['Bin 17'])
-        #print("Bin 18:", data['Bin 18'])
-        #print("Bin 19:", data['Bin 19'])
-        #print("Bin 20:", data['Bin 20'])
-        #print("Bin 21:", data['Bin 21'])
-        #print("Bin 22:", data['Bin 22'])
-        #print("Bin 23:", data['Bin 23'])
-            
-        #print("PM  1.0:", data['PM_A'])
-        #print("PM  2.5:", data['PM_B'])
-        #print("PM 10.0:", data['PM_C']        )
-
-        sleep(0.1)
-
-	   #data = numpy.sort(data.dtype.names)
-        #data = sorted(data.iterkeys()
 
         return data
 

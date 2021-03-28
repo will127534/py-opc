@@ -78,7 +78,7 @@ class _OPC(object):
                 # store the info_string
                 infostring = self.read_info_string()
 
-                print infostring
+                print(infostring)
 
                 try:
                     self.firmware['version'] = int(re.findall("\d{3}", infostring)[-1])
@@ -124,7 +124,7 @@ class _OPC(object):
         :type byte_array: array
         :rtype: float
         """
-        #print "len(byte_array):",len(byte_array)
+        #print("len(byte_array):",len(byte_array))
         if len(byte_array) != 4:
             return None
         return struct.unpack('f', struct.pack('4B', *byte_array))[0]
@@ -144,7 +144,7 @@ class _OPC(object):
         :type vals: array
         :rtype: float
         """
-        print "temp: ", vals
+        print("temp: ", vals)
         if len(vals) < 4:
             return None
         return ((vals[3] << 24) | (vals[2] << 16) | (vals[1] << 8) | vals[0]) 
@@ -153,7 +153,7 @@ class _OPC(object):
         """Calculates the temperature in degrees celcius"""
         tempraw = ((MSB << 8) | LSB)
         temp = -45.0 + 175.0 * tempraw /(2**16-1)
-        #print "temp raw/deg =", tempraw, temp
+        #print("temp raw/deg =", tempraw, temp)
         return temp
 
     def _calculate_hum(self, vals):
@@ -308,7 +308,7 @@ class OPCN3(_OPC):
        ## if self.firmware['major'] < firmware_min or self.firmware['major'] > firmware_max:
        ##     logger.error("Firmware version is invalid for this device.")
 
-       ## print self.firmware['major']
+       ## print(self.firmware['major'])
 
        ## raise FirmwareVersionError("Your firmware is not yet supported. Only versions 14-18 ...")
 
@@ -316,30 +316,30 @@ class OPCN3(_OPC):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
         
         # SEND 0x03 TO SET FAN ON
         a=int('0x03',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x03])[0]
-        print "FAN_ON: ", hex(a), a
+        print("FAN_ON: ", hex(a), a)
 
     def fan_off(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
@@ -347,39 +347,39 @@ class OPCN3(_OPC):
         
         # SEND 0x02 TO SET FAN OFF
         a=int('0x02',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x02])[0]
-        print "FAN_OFF: ", hex(a), a
+        print("FAN_OFF: ", hex(a), a)
 
         
     def laser_on(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)        
 
         # SEND 0x07 TO SET FAN ON
         a=int('0x07',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x07])[0]
-        print "LASER_ON: ", hex(a), a
+        print("LASER_ON: ", hex(a), a)
 
     def laser_off(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)        
@@ -387,9 +387,9 @@ class OPCN3(_OPC):
 
         # SEND 0x06 TO SET LASER OFF
         a=int('0x06',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x06])[0]        
-        print "LASER_OFF: ", hex(a), a
+        print("LASER_OFF: ", hex(a), a)
         
     def on(self):
         """Turn ON the OPC (fan and laser)
@@ -401,39 +401,39 @@ class OPCN3(_OPC):
 
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        #print "CMD: ", hex(a), a
+        #print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            #print "CMD: ", hex(a), a
+            #print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a1 = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
         
         # SEND 0x03 TO SET FAN ON
         a=int('0x03',16)
-        #print "sending ", "{0:08b}".format(a)
+        #print("sending ", "{0:08b}".format(a))
         b1 = self.cnxn.xfer([0x03])[0]
-        #print "FAN_ON: ", hex(b1), b1
+        #print("FAN_ON: ", hex(b1), b1)
 
         sleep(1)
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        #print "CMD: ", hex(a), a
+        #print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            #print "CMD: ", hex(a), a
+            #print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a2 = self.cnxn.xfer([0x03])[0]
         sleep(0.02)        
 
         # SEND 0x07 TO SET FAN ON
         a=int('0x07',16)
-        #print "sending ", "{0:08b}".format(a)
+        #print("sending ", "{0:08b}".format(a))
         b2 = self.cnxn.xfer([0x07])[0]
-        #print "LASER_ON: ", hex(b2), b2
+        #print("LASER_ON: ", hex(b2), b2)
 
         return True if a1 == 0xF3 and b1 == 0x03 and a2 == 0xF3 and b2 == 0x03 else False
  
@@ -447,39 +447,39 @@ class OPCN3(_OPC):
 
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        #print "CMD: ", hex(a), a
+        #print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            #print "CMD: ", hex(a), a
+            #print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a1 = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
 
         # SEND 0x06 TO SET LASER OFF
         a=int('0x06',16)
-        #print "sending ", "{0:08b}".format(a)
+        #print("sending ", "{0:08b}".format(a))
         b1 = self.cnxn.xfer([0x06])[0]        
-        #print "LASER_OFF: ", hex(b1), b1
+        #print("LASER_OFF: ", hex(b1), b1)
 
         sleep(1)
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        #print "CMD: ", hex(a), a
+        #print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a2 = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
    
         # SEND 0x02 TO SET FAN OFF
         a=int('0x02',16)
-        #print "sending ", "{0:08b}".format(a)
+        #print("sending ", "{0:08b}".format(a))
         b2 = self.cnxn.xfer([0x02])[0]
-        #print "FAN_OFF: ", hex(b2), b2
+        #print("FAN_OFF: ", hex(b2), b2)
 
         return True if a1 == 0xF3 and b1 == 0x03 and a2 == 0xF3 and b2 == 0x03 else False
         
@@ -542,10 +542,10 @@ class OPCN3(_OPC):
         brep=int('0xf3',16)
         while a is not arep or b is not brep:
             a = self.cnxn.xfer([0x30])[0]
-            #print hex(a), a
+            #print(hex(a), a)
             sleep(0.02)
             b = self.cnxn.xfer([0x30])[0]
-            #print hex(b), b
+            #print(hex(b), b)
 
         # Wait 20 ms
         sleep(20e-3)
@@ -558,7 +558,7 @@ class OPCN3(_OPC):
             resp.append(r)
             sleep(10e-3)
 
-        #print resp
+        #print(resp)
             
         # convert to real things and store in dictionary!
         data['Bin 0']           = self._16bit_unsigned(resp[0], resp[1])
@@ -621,7 +621,7 @@ class OPCN3(_OPC):
         # Check that checksum and the least significant bits of the sum of histogram bins
         # are equivilant
         if (histogram_sum & 0x0000FFFF) != data['Checksum']:
-            print "CHECKSUM: ", histogram_sum, data['Checksum']
+            print("CHECKSUM: ", histogram_sum, data['Checksum'])
             logger.warning("Data transfer was incomplete")
             ##return None
 
@@ -655,34 +655,34 @@ class OPCN3(_OPC):
             data['Bin 23']  = data['Bin 23'] / _conv_
 
 
-        #print "Bin  0:", data['Bin 0']
-        #print "Bin  1:", data['Bin 1']
-        #print "Bin  2:", data['Bin 2']
-        #print "Bin  3:", data['Bin 3']
-        #print "Bin  4:", data['Bin 4']
-        #print "Bin  5:", data['Bin 5']
-        #print "Bin  6:", data['Bin 6']
-        #print "Bin  7:", data['Bin 7']
-        #print "Bin  8:", data['Bin 8']
-        #print "Bin  9:", data['Bin 9']
-        #print "Bin 10:", data['Bin 10']
-        #print "Bin 11:", data['Bin 11']
-        #print "Bin 12:", data['Bin 12']
-        #print "Bin 13:", data['Bin 13']
-        #print "Bin 14:", data['Bin 14']
-        #print "Bin 15:", data['Bin 15']
-        #print "Bin 16:", data['Bin 16']
-        #print "Bin 17:", data['Bin 17']
-        #print "Bin 18:", data['Bin 18']
-        #print "Bin 19:", data['Bin 19']
-        #print "Bin 20:", data['Bin 20']
-        #print "Bin 21:", data['Bin 21']
-        #print "Bin 22:", data['Bin 22']
-        #print "Bin 23:", data['Bin 23']
+        #print("Bin  0:", data['Bin 0'])
+        #print("Bin  1:", data['Bin 1'])
+        #print("Bin  2:", data['Bin 2'])
+        #print("Bin  3:", data['Bin 3'])
+        #print("Bin  4:", data['Bin 4'])
+        #print("Bin  5:", data['Bin 5'])
+        #print("Bin  6:", data['Bin 6'])
+        #print("Bin  7:", data['Bin 7'])
+        #print("Bin  8:", data['Bin 8'])
+        #print("Bin  9:", data['Bin 9'])
+        #print("Bin 10:", data['Bin 10'])
+        #print("Bin 11:", data['Bin 11'])
+        #print("Bin 12:", data['Bin 12'])
+        #print("Bin 13:", data['Bin 13'])
+        #print("Bin 14:", data['Bin 14'])
+        #print("Bin 15:", data['Bin 15'])
+        #print("Bin 16:", data['Bin 16'])
+        #print("Bin 17:", data['Bin 17'])
+        #print("Bin 18:", data['Bin 18'])
+        #print("Bin 19:", data['Bin 19'])
+        #print("Bin 20:", data['Bin 20'])
+        #print("Bin 21:", data['Bin 21'])
+        #print("Bin 22:", data['Bin 22'])
+        #print("Bin 23:", data['Bin 23'])
             
-        #print "PM  1.0:", data['PM_A']
-        #print "PM  2.5:", data['PM_B']
-        #print "PM 10.0:", data['PM_C']        
+        #print("PM  1.0:", data['PM_A'])
+        #print("PM  2.5:", data['PM_B'])
+        #print("PM 10.0:", data['PM_C']        )
 
         sleep(0.1)
 

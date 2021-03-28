@@ -8,8 +8,6 @@ import warnings
 import re
 import logging
 
-import numpy
-
 from .exceptions import firmware_error_msg
 
 # set up a default logger

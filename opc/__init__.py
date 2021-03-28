@@ -618,14 +618,14 @@ class OPCN3(_OPC):
 
         # Check that checksum and the least significant bits of the sum of histogram bins
         # are equivilant
-        if (histogram_sum & 0x0000FFFF) != data['Checksum']:
-            print("CHECKSUM: ", histogram_sum, data['Checksum'])
-            logger.warning("Data transfer was incomplete")
-            ##return None
+        #if (histogram_sum & 0x0000FFFF) != data['Checksum']:
+        #    print("CHECKSUM: ", histogram_sum, data['Checksum'])
+        #    logger.warning("Data transfer was incomplete")
+        #    ##return None
 
         # If histogram is true, convert histogram values to number concentration
         if number_concentration is True:
-            _conv_ = data['Sample Flow Rate'] * data['Sampling Period'] # Divider in units of ml (cc)
+            _conv_ = data['SFR'] * data['Sampling Period'] # Divider in units of ml (cc)
 
             data['Bin 0']   = data['Bin 0'] / _conv_
             data['Bin 1']   = data['Bin 1'] / _conv_

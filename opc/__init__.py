@@ -594,9 +594,9 @@ class OPCN3(_OPC):
         data['Temperature']     = self._calculate_temp_uint(resp[56],resp[57])
         data['Relative humidity']     = self._calculate_hum_uint(resp[58],resp[59])
 
-        data['PM_A']     = self._calculate_float(resp[60:64])
-        data['PM_B']     = self._calculate_float(resp[64:68])
-        data['PM_C']     = self._calculate_float(resp[68:72])
+        data['PM1']     = self._calculate_float(resp[60:64])
+        data['PM2.5']     = self._calculate_float(resp[64:68])
+        data['PM10']     = self._calculate_float(resp[68:72])
 
         data['Reject count Glitch'] = self._16bit_unsigned(resp[72], resp[73])
         data['Reject count LongTOF'] = self._16bit_unsigned(resp[74], resp[75])
@@ -684,7 +684,7 @@ class OPCN3(_OPC):
 
         sleep(0.1)
 
-	#data = numpy.sort(data.dtype.names)
+	   #data = numpy.sort(data.dtype.names)
         #data = sorted(data.iterkeys()
 
         return data

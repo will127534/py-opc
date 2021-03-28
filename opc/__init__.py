@@ -590,7 +590,7 @@ class OPCN3(_OPC):
         data['Bin7 MToF']       = self._calculate_mtof(resp[51])
 
         data['Sampling Period'] = self._calculate_period_uint(resp[52],resp[53])
-        data['Sample Flow Rate'] = self._calculate_flowrate(resp[54],resp[55])
+        data['SFR'] = self._calculate_flowrate(resp[54],resp[55])
         data['Temperature']     = self._calculate_temp_uint(resp[56],resp[57])
         data['Relative humidity']     = self._calculate_hum_uint(resp[58],resp[59])
 

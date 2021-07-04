@@ -201,6 +201,22 @@ class _OPC(object):
         ''' calculate the sampling period in seconds '''
         return ((MSB << 8) | LSB) / 100.0
 
+    def _calculate_crc16(self, data, length):
+        ''' calculate the modbus like CRC16 Checksum '''
+        crc = 0xFFFF
+        j = 0
+        while length != 0:
+            crc ^= list.__getitem__(data, j)
+            for i in range(0,8):
+                if crc & 1:
+                    crc >>= 1
+                    crc ^= 0xA001
+                else:
+                    crc >>= 1
+            length -= 1
+            j += 1
+        return crc
+
     def wait(self, **kwargs):
         """Wait for the OPC to prepare itself for data transmission. On some devides this can take a few seconds
         :rtype: self
@@ -605,22 +621,13 @@ class OPCN3(_OPC):
         data['Laser status'] = self._16bit_unsigned(resp[82], resp[83])
         data['Checksum'] = self._16bit_unsigned(resp[84], resp[85])
 
+        calculated_checksum = self._calculate_crc16(resp, 84)
 
-        # Calculate the sum of the histogram bins
-        histogram_sum = data['Bin 0'] + data['Bin 1'] + data['Bin 2']   + \
-                data['Bin 3'] + data['Bin 4'] + data['Bin 5'] + data['Bin 6']   + \
-                data['Bin 7'] + data['Bin 8'] + data['Bin 9'] + data['Bin 10']  + \
-                data['Bin 11'] + data['Bin 12'] + data['Bin 13'] + data['Bin 14'] + \
-                data['Bin 15'] + data['Bin 16'] + data['Bin 17'] + data['Bin 18'] + \
-                data['Bin 19'] + data['Bin 20'] + data['Bin 21'] + data['Bin 22'] + \
-                data['Bin 23']
-
-        # Check that checksum and the least significant bits of the sum of histogram bins
-        # are equivilant
-        #if (histogram_sum & 0x0000FFFF) != data['Checksum']:
-        #    print("CHECKSUM: ", histogram_sum, data['Checksum'])
-        #    logger.warning("Data transfer was incomplete")
-        #    ##return None
+        # Check that calculated checksum and sent checksum are identical
+        if calculated_checksum != data['Checksum']:
+            print("CHECKSUM: ", calculated_checksum, data['Checksum'])
+            logger.warning("Data transfer was incomplete")
+            return None
 
         # If histogram is true, convert histogram values to number concentration
         if number_concentration is True:
